@@ -6,7 +6,6 @@ __pycache__/
 .DS_Store
 .idea
 
-src/package-lock.json
 **/.DS_Store
 
 # C extensions
