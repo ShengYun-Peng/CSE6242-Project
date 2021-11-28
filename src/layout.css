@@ -1,0 +1,161 @@
+body{
+    background: url('//cdn.jsdelivr.net/npm/three-globe/example/img/night-sky.png')
+}
+
+.box{
+    position:absolute;
+    left: 1100px;
+    top: 150px;
+}
+
+.box1{
+    width: 110%;
+    height: 120%;
+}
+
+.box2{
+    top: 400px;
+    width: 100%;
+}
+
+.box3{
+    width: 100%;
+}
+
+.three-graph{
+    position:absolute;
+    top: 100px;
+    width: 80%;
+    left: 20px;
+}
+
+.fixed-div{
+    position:absolute;
+    top: 15px;
+    left: 0px;
+    width: 80%;
+}
+
+.bottom-info-container,.top-info-container{
+    z-index:1;
+    position:absolute;
+    color:#fff;
+    text-align:center;
+    width:100%
+}
+
+.top-info-container{
+    top:5px;
+}
+
+.bottom-info-container{
+    top: 570px;
+    left: 140px;
+    bottom:20px;
+    width:80%
+}
+
+.title{font-size:35px;color:#e6f1ff}
+.title-desc{margin-top:5px;color:#ccd6f6;padding:0 5px}
+
+#confirmed{color:#ff4848}
+#deaths{color:#daa520}
+#recovered{color:#1ae021}
+
+/* country card layout */
+.card{
+    font-family:'Space Mono',monospace;
+    transition:.3s;
+    background-color:#000;
+    width:220px;
+    border:2px solid #4682b4;
+    border-radius:15px;
+    z-index:2
+}
+
+.card-spacer{
+    height:4px
+}
+
+.container{
+    padding:1px 12px 8px;
+    text-align:left
+}
+
+.card-img{
+    object-fit:contain;
+    width:100%;
+    border-top-left-radius:10px;
+    border-top-right-radius:10px
+}
+
+.card-title{
+    font-weight:700
+}
+
+.bottom-info{
+    display:flex;
+    flex-direction:column;
+    font-size:11px
+}
+
+.scene-tooltip{
+    z-index:2
+}
+
+.timeline-container{
+    z-index:1;
+    position:absolute;
+    display:flex;
+    color:#fff;
+    width:60%;
+    align-items:center
+}
+
+@media only screen and (max-width:768px){.timeline-container{width:90%}}
+.slider{
+    -webkit-appearance:none;
+    height:2px;width:100%;
+    margin-right:10px;
+    border-radius:5px;
+    background:#ccd6f6;
+    outline:0;
+    opacity:.7;
+    -webkit-transition:.2s;
+    transition:opacity .2s
+}
+
+.slider:hover{
+    opacity:1
+}
+
+.slider::-webkit-slider-thumb{
+    -webkit-appearance:none;
+    appearance:none;
+    width:25px;
+    height:25px;
+    border-radius:50%;
+    background:#000;
+    cursor:pointer;
+    border:2px solid #ccd6f6
+}
+
+.slider::-moz-range-thumb{
+    width:25px;
+    height:25px;
+    border-radius:50%;
+    background:#000;
+    cursor:pointer;
+    border:2px solid #ccd6f6
+}
+
+.play-button{
+    border-radius:5px;
+    padding:5px;
+    font-size:14px;
+    cursor:pointer;
+    background-color:transparent;
+    border:1px solid #ccd6f6;color:#ccd6f6;
+    outline:0;
+    width:5em
+}

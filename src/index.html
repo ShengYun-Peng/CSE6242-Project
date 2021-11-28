@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="monetization" content="$coil.xrptipbot.com/701298d5-481d-40ff-9945-336671ab2c42"/>
+    <link href="https://fonts.googleapis.com/css?family=Space+Mono:400,700&display=swap" rel="stylesheet"/>
+    <meta property="og:image" content="https://i.imgur.com/1AFEXhs.png"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://d3js.org/d3.v6.min.js"></script>
+    <title>CSE 6242: COVID-19 and Twitter Visualization</title>
+    <link rel="stylesheet" href="/layout.css"/>
+</head>
+
+<body class="bg-dark">
+
+<div class="top-info-container">
+    <!--Navigation bar-->
+    <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+        <div class="container-fluid">
+            <span class="navbar-text fs-3 fw-bold">CSE6262 COVID Visualization</span>
+            <button class="btn btn-primary pull-right" type="button">Click to View Twitter</button>
+        </div>
+    </nav>
+
+    <!--Load Data-->
+    <div class="title-desc">Loading countries affected by the virus...</div>
+</div>
+
+<div class="container text-white">
+    <!--Plot 3 line chart-->
+    <div class="three-graph">
+    <div class="col-sm-3 mt-3 border border-secondary border-2" id="graph1">
+        <script src="graph1.js"></script>
+    </div>
+    <div class="col-sm-3 mt-3 border border-secondary border-2" id="graph2">
+        <script src="graph2.js"></script>
+    </div>
+    <div class="col-sm-3 mt-3 border border-secondary border-2" id="graph3">
+        <script src="graph3.js"></script>
+    </div>
+    </div>
+
+    <div class="box" style="color: #e6f1ff; padding: 0 5px;">
+        <div class="col-sm-3 mt-3 border border-secondary border-2 box1">
+            <h5 class="mt-2 text-center text-danger">Total Confirmed Cases</h5>
+            <p class="text-center text-danger fs-3">
+            <span id="confirmed">0</span>
+            </p>
+        </div>
+        <div class="col-sm-3 mt-3 border border-secondary border-2 box1">
+            <h5 class="mt-2 text-center text-warning">Total Deaths</h5>
+            <p class="text-center text-danger fs-3">
+                <span id="deaths">0</span>
+            </p>
+        </div>
+        <div class="col-sm-3 mt-3 border border-secondary border-2 box1">
+            <h5 class="mt-2 text-center text-success">Total Recovered</h5>
+            <p class="text-center text-danger fs-3">
+                <span id="recovered">0</span>
+            </p>
+        </div>
+    </div>
+
+    <!--Globe container from globe.gl: https://github.com/vasturiano/globe.gl-->
+    <div id="globeViz" class="fixed-div"></div>
+</div>
+
+<div class="bottom-info-container">
+    <div style="display: flex; justify-content: center;">
+        <div class="timeline-container">
+            <button disabled="disabled" style="margin-right: 20px;" class="play-button">Play</button>
+            <input class="slider" disabled="disabled" type="range" min="0" max="1" step="1"/>
+            <span style="font-size: 14px; color: #ccd6f6;" class="slider-date"></span>
+        </div>
+    </div>
+    <div style="font-size: 14px; color: #ccd6f6; margin-top: 35px;">
+        <span class="updated"></span>
+    </div>
+</div>
+    <script type="module" src="/index.js"></script>
+</body>
+</html>
