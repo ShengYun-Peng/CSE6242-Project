@@ -10,15 +10,15 @@ if __name__ == '__main__':
     plt.rcParams['font.family'] = 'Times New Roman'
     figure_folder = '../figure'
     top_terms = 10
-    figure_size = (4, 3)
+    figure_size = (3.5, 3)
 
     for gram in ['term', 'bigram', 'trigram']:
         gram_file = '../data/frequent_words_dataset/frequent_' + gram + 's.csv'
         df_gram = pd.read_csv(gram_file)
         df_gram.sort_values(by='counts', ascending=False, inplace=True, ignore_index=True)
         df_gram.iloc[(top_terms - 1)::-1].plot.barh(x='term', y='counts', figsize=figure_size, legend=False)
-        plt.xlabel('Count')
-        plt.ylabel(gram.capitalize())
+        # plt.xlabel('Count')
+        plt.ylabel('')
         plt.tight_layout()
         plt.savefig(os.path.join(figure_folder, gram + 's.pdf'))
         plt.close()
@@ -38,8 +38,8 @@ if __name__ == '__main__':
     df_country.index = df_country.index.map(countries)
     ax_country = df_country[(top_countries - 1)::-1].plot.barh(figsize=figure_size)
     ax_country.xaxis.set_major_formatter(mtick.PercentFormatter(xmax=1))
-    plt.xlabel('Percentage')
-    plt.ylabel('Country')
+    # plt.xlabel('Percentage')
+    # plt.ylabel('Country')
     plt.tight_layout()
     plt.savefig(os.path.join(figure_folder, 'countries.pdf'))
     plt.close()
@@ -50,8 +50,8 @@ if __name__ == '__main__':
     df_lang.index = df_lang.index.map(lambda code: Language.get(code).display_name())
     ax_lang = df_lang[(top_languages - 1)::-1].plot.barh(figsize=figure_size)
     ax_lang.xaxis.set_major_formatter(mtick.PercentFormatter(xmax=1))
-    plt.xlabel('Percentage')
-    plt.ylabel('Language')
+    # plt.xlabel('Percentage')
+    # plt.ylabel('Language')
     plt.tight_layout()
     plt.savefig(os.path.join(figure_folder, 'languages.pdf'))
     plt.close()
