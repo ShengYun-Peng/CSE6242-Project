@@ -36,21 +36,27 @@
             </a>
         </div>
     </nav>
-
-    <div class="container text-white">
-        <div class="col-sm-3 mt-3 border border-secondary border-2">
-            <h5 class="mt-2 text-center text-danger">Total COVID-19 Tweets in <br>2021 March and April</h5>
-            <p class="text-center text-danger fs-3">
-                <span id="total">0</span>
-            </p>
-        </div>
-
-        <div id="cloud" style="height: 100px; width: 100px"></div>
-    </div>
 </div>
 
+<div class="container text-white" style="position: absolute; left: 20px; top: 100px">
+    <div class="col-sm-3 mt-3 border border-secondary border-2">
+        <h5 class="mt-2 text-center text-danger">Total COVID-19 Tweets in <br>2021 March and April</h5>
+        <p class="text-center text-danger fs-3">
+            <span id="total">0</span>
+        </p>
+    </div>
 
-<div id="globeViz"></div>
+    <div class="col-sm-3 mt-3 border border-secondary border-2">
+        <h5 class="mt-2 text-center text-warning">Word Cloud</h5>
+    </div>
+
+    <div class="col-sm-3 mt-3 border border-secondary border-2" style="height: 320px; width: 320px">
+        <div id="cloud" style="height: 100px; width: 100px"></div>
+    </div>
+
+    <div id="globeViz" style="position: absolute; left: 0; top: 0"></div>
+</div>
+
 
 <script>
     const weightColor = d3.scaleSequentialSqrt(d3.interpolateYlOrRd)
@@ -58,9 +64,10 @@
 
     const world = Globe()
     (document.getElementById('globeViz'))
+        .backgroundColor('rgba(0, 0, 0, 0)')
         .globeImageUrl('//unpkg.com/three-globe/example/img/earth-night.jpg')
         .bumpImageUrl('//unpkg.com/three-globe/example/img/earth-topology.png')
-        .backgroundImageUrl('//unpkg.com/three-globe/example/img/night-sky.png')
+        // .backgroundImageUrl('//unpkg.com/three-globe/example/img/night-sky.png')
         .hexBinPointWeight('pop')
         .hexAltitude(d => d.sumWeight * 6e-8)
         .hexBinResolution(4)
@@ -96,10 +103,10 @@
 
         //Construct the word cloud's SVG element
         var svg = d3.select(selector).append("svg")
-            .attr("width", 300)
-            .attr("height", 300)
+            .attr("width", 320)
+            .attr("height", 320)
             .append("g")
-            .attr("transform", "translate(150,150)");
+            .attr("transform", "translate(160,160)");
 
 
         //Draw the word cloud
@@ -154,7 +161,7 @@
             // of the wordCloud return value.
             update: function (words) {
                 // console.log(words)
-                d3.layout.cloud().size([500, 500])
+                d3.layout.cloud().size([320, 320])
                     .words(words)
                     .padding(5)
                     .rotate(function () {
