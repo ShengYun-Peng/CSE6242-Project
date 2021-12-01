@@ -15,9 +15,11 @@
     <title>CSE 6242: COVID-19 and Twitter Visualization</title>
     <link rel="stylesheet" href="/layout.css"/>
 
+    <script src="https://d3js.org/d3.v3.min.js"></script>
+    <script src="https://rawgit.com/jasondavies/d3-cloud/master/build/d3.layout.cloud.js"></script>
+
     <script src="//unpkg.com/d3"></script>
     <script src="//unpkg.com/d3-dsv"></script>
-
     <script src="//unpkg.com/globe.gl"></script>
     <!--<script src="../../dist/globe.gl.js"></script>-->
 </head>
@@ -42,6 +44,8 @@
                 <span id="total">0</span>
             </p>
         </div>
+
+        <div id="cloud" style="height: 100px; width: 100px"></div>
     </div>
 </div>
 
@@ -79,6 +83,135 @@
         total_tweets += +data.pop;
         document.getElementById("total").innerHTML = total_tweets;
     });
+</script>
+
+<script>
+    //Simple animated example of d3-cloud - https://github.com/jasondavies/d3-cloud
+    //Based on https://github.com/jasondavies/d3-cloud/blob/master/examples/simple.html
+
+    // Encapsulate the word cloud functionality
+    function wordCloud(selector) {
+
+        var colors = ["crimson", "coral", "rosybrown", "lightsalmon", "blueviolet", "maroon"]
+
+        //Construct the word cloud's SVG element
+        var svg = d3.select(selector).append("svg")
+            .attr("width", 300)
+            .attr("height", 300)
+            .append("g")
+            .attr("transform", "translate(150,150)");
+
+
+        //Draw the word cloud
+        function draw(words) {
+            var cloud = svg.selectAll("g text")
+                .data(words, function (d) {
+                    return d.text;
+                })
+
+            //Entering words
+            cloud.enter()
+                .append("text")
+                .style("font-family", "Impact")
+                .style("fill", function (d) {
+                    return colors[Math.floor(Math.random() * colors.length)]
+                })
+                .attr("text-anchor", "middle")
+                .attr('font-size', 1)
+                .text(function (d) {
+                    return d.text;
+                });
+
+            //Entering and existing words
+            cloud
+                .transition()
+                .duration(600)
+                .style("font-size", function (d) {
+                    return d.size + "px";
+                })
+                .attr("transform", function (d) {
+                    return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
+                })
+                .style("fill-opacity", 1);
+
+            //Exiting words
+            cloud.exit()
+                .transition()
+                .duration(200)
+                .style('fill-opacity', 1e-6)
+                .attr('font-size', 1)
+                .remove();
+        }
+
+
+        //Use the module pattern to encapsulate the visualisation code. We'll
+        // expose only the parts that need to be public.
+        return {
+
+            //Recompute the word cloud for a new set of words. This method will
+            // asycnhronously call draw when the layout has been computed.
+            //The outside world will need to call this function, so make it part
+            // of the wordCloud return value.
+            update: function (words) {
+                // console.log(words)
+                d3.layout.cloud().size([500, 500])
+                    .words(words)
+                    .padding(5)
+                    .rotate(function () {
+                        return ~~(Math.random() * 2) * 90;
+                    })
+                    .font("Impact")
+                    .fontSize(function (d) {
+                        return d.size;
+                    })
+                    .on("end", draw)
+                    .start();
+            }
+        }
+
+    }
+
+    //Some sample data - http://en.wikiquote.org/wiki/Opening_lines
+    var words = [
+        '2021-1 covid19 boris biden us stay home new cases biotech new year africa health recovery strain facemasks rollout deaths everyday official leaked second wave lockdown tested positive',
+        '2021-8 covid19 coronavirus vaccine myanmar new cases people age christian government weapons free charge public health awareness donation medicine foods philanthropist help india organization eviction moratorium',
+        '2021-3 covid19 coronavirus vaccine first virus house blood clots stay positive rollout cure doses truth mental health third wave new deaths reports officials ccp uphill innovation border immigrants care revolving',
+        '2021-10 covid19 coronavirus vaccine fully safe children cases pandemic health vaccination first virus us year news johnson today deaths like trump lockdown booster shots herd immunity whitehouse long-term mandates kids preventing',
+        '2021-5 covid19 coronavirus vaccine new cases people pandemic health vaccines fully dose us virus news death toll first second biden vaccination like year tested need time today test help lockdown shot works outright removal'
+    ]
+
+    //Prepare one of the sample sentences by removing punctuation,
+    // creating an array of words and computing a random size attribute.
+    function getWords(i) {
+        return words[i]
+            .replace(/[!\.,:;\?]/g, '')
+            .split(' ')
+            .map(function (d) {
+                return {
+                    text: d,
+                    size: 10 + Math.random() * 20
+                };
+            })
+    }
+
+    //This method tells the word cloud to redraw with a new set of words.
+    //In reality the new words would probably come from a server request,
+    // user input or some other source.
+    function showNewWords(vis, i) {
+        i = i || 0;
+
+        vis.update(getWords(i++ % words.length))
+        setTimeout(function () {
+            // console.log("abc")
+            showNewWords(vis, i + 1)
+        }, 5000)
+    }
+
+    //Create a new instance of the word cloud visualisation.
+    var myWordCloud = wordCloud('#cloud');
+
+    //Start cycling through the demo data
+    showNewWords(myWordCloud);
 </script>
 
 </body>
