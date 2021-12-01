@@ -22,7 +22,7 @@
     <!--<script src="../../dist/globe.gl.js"></script>-->
 </head>
 
-<body>
+<body class="bg-dark">
 
 <div class="top-info-container">
     <!--Navigation bar-->
@@ -34,7 +34,17 @@
             </a>
         </div>
     </nav>
+
+    <div class="container text-white">
+        <div class="col-sm-3 mt-3 border border-secondary border-2">
+            <h5 class="mt-2 text-center text-danger">Total COVID-19 Tweets in <br>2021 March and April</h5>
+            <p class="text-center text-danger fs-3">
+                <span id="total">0</span>
+            </p>
+        </div>
+    </div>
 </div>
+
 
 <div id="globeViz"></div>
 
@@ -62,6 +72,14 @@
     // Add auto-rotation
     world.controls().autoRotate = true;
     world.controls().autoRotateSpeed = 0.6;
+
+    // Count tweets
+    let total_tweets = 0
+    d3.csv("/data/2021_march_april_geo_country.csv", function (data) {
+        total_tweets += +data.pop;
+        document.getElementById("total").innerHTML = total_tweets;
+    });
 </script>
+
 </body>
 </html>
