@@ -76,8 +76,10 @@
         .hexBinMerge(true)
         .enablePointerInteraction(false); // performance improvement
 
-    fetch('./data/2021_march_april_geo_country.csv').then(res => res.text())
-        .then(csv => d3.csvParse(csv, ({lat, lng, pop}) => ({lat: +lat, lng: +lng, pop: +pop * 100})))
+    const file_country = './data/2021_march_april_geo_country.csv';
+    const file_coo = './data/2021_march_april_processed_coordinates.tsv'
+    fetch(file_coo).then(res => res.text())
+        .then(csv => d3.csvParse(csv, ({lat, lng, pop}) => ({lat: +lat, lng: +lng, pop: +pop * 1.5e5})))
         .then(data => world.hexBinPointsData(data));
 
     // Add auto-rotation
@@ -86,7 +88,7 @@
 
     // Count tweets
     let total_tweets = 0
-    d3.csv("/data/2021_march_april_geo_country.csv", function (data) {
+    d3.csv(file_country, function (data) {
         total_tweets += +data.pop;
         document.getElementById("total").innerHTML = total_tweets;
     });
