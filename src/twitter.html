@@ -79,7 +79,7 @@
     const file_country = './data/2021_march_april_geo_country.csv';
     const file_coo = './data/2021_march_april_processed_coordinates.tsv'
     fetch(file_coo).then(res => res.text())
-        .then(csv => d3.csvParse(csv, ({lat, lng, pop}) => ({lat: +lat, lng: +lng, pop: +pop * 1.5e5})))
+        .then(csv => d3.csvParse(csv, ({lat, lng, pop}) => ({lat: +lat, lng: +lng, pop: +pop * 1.2e5})))
         .then(data => world.hexBinPointsData(data));
 
     // Add auto-rotation
