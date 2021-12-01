@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style> body {
+        margin: 0;
+    } </style>
+
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="monetization" content="$coil.xrptipbot.com/701298d5-481d-40ff-9945-336671ab2c42"/>
+    <link href="https://fonts.googleapis.com/css?family=Space+Mono:400,700&display=swap" rel="stylesheet"/>
+    <meta property="og:image" content="https://i.imgur.com/1AFEXhs.png"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://d3js.org/d3.v6.min.js"></script>
+    <title>CSE 6242: COVID-19 and Twitter Visualization</title>
+    <link rel="stylesheet" href="/layout.css"/>
+
+    <script src="//unpkg.com/d3"></script>
+    <script src="//unpkg.com/d3-dsv"></script>
+
+    <script src="//unpkg.com/globe.gl"></script>
+    <!--<script src="../../dist/globe.gl.js"></script>-->
+</head>
+
+<body>
+
+<div class="top-info-container">
+    <!--Navigation bar-->
+    <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+        <div class="container-fluid">
+            <span class="navbar-text fs-3 fw-bold">CSE6262 Twitter Visualization</span>
+            <a href="index.html">
+                <button class="btn btn-primary pull-right" type="button">Back</button>
+            </a>
+        </div>
+    </nav>
+</div>
+
+<div id="globeViz"></div>
+
+<script>
+    const weightColor = d3.scaleSequentialSqrt(d3.interpolateYlOrRd)
+        .domain([0, 1e7]);
+
+    const world = Globe()
+    (document.getElementById('globeViz'))
+        .globeImageUrl('//unpkg.com/three-globe/example/img/earth-night.jpg')
+        .bumpImageUrl('//unpkg.com/three-globe/example/img/earth-topology.png')
+        .backgroundImageUrl('//unpkg.com/three-globe/example/img/night-sky.png')
+        .hexBinPointWeight('pop')
+        .hexAltitude(d => d.sumWeight * 6e-8)
+        .hexBinResolution(4)
+        .hexTopColor(d => weightColor(d.sumWeight))
+        .hexSideColor(d => weightColor(d.sumWeight))
+        .hexBinMerge(true)
+        .enablePointerInteraction(false); // performance improvement
+
+    fetch('./data/2021_march_april_geo_country.csv').then(res => res.text())
+        .then(csv => d3.csvParse(csv, ({lat, lng, pop}) => ({lat: +lat, lng: +lng, pop: +pop * 100})))
+        .then(data => world.hexBinPointsData(data));
+
+    // Add auto-rotation
+    world.controls().autoRotate = true;
+    world.controls().autoRotateSpeed = 0.6;
+</script>
+</body>
+</html> 

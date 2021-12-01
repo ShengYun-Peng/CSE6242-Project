@@ -26,7 +26,7 @@ function getDailyNumber(x) {
 
 // Globe container
 const globeContainer = document.getElementById('globeViz');
-const colorScale = d3.scaleSequentialPow(d3.interpolate("#2354a3", "orange")).exponent(1 / 4);
+const colorScale = d3.scaleSequentialPow(d3.interpolate("#2354a3", "red")).exponent(1 / 3);
 const getVal = (feat) => {
     return feat.covidData.confirmed / feat.properties.POP_EST;
 };

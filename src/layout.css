@@ -3,36 +3,38 @@ body{
 }
 
 .box{
-    position:absolute;
-    left: 1100px;
-    top: 150px;
+    position:relative;
+    /*left: 1100px;*/
+    top: -380px;
+    left: 950px;
+    width: 50%;
 }
 
 .box1{
-    width: 110%;
+    width: 50%;
     height: 120%;
 }
 
 .box2{
-    top: 400px;
-    width: 100%;
+    /*top: 400px;*/
+    width: 50%;
 }
 
 .box3{
-    width: 100%;
+    width: 50%;
 }
 
 .three-graph{
-    position:absolute;
+    position:relative;
     top: 100px;
-    width: 80%;
-    left: 20px;
+    width: 100%;
+    left: -100px;
 }
 
 .fixed-div{
-    position:absolute;
-    top: 15px;
-    left: 0px;
+    position:relative;
+    top: -950px;
+    left: -150px;
     width: 80%;
 }
 
