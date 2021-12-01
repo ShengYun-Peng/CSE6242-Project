@@ -31,57 +31,54 @@ if __name__ == '__main__':
         wait_on_rate_limit=True
     )
 
-    tweet_id = "1371249868715347968"
-    tweet = client.get_tweet(
-        id=tweet_id,
-        place_fields=['geo'],
-        tweet_fields=['geo'],
-    )
+    # tweet_id1 = "1371249868715347968"
+    # tweet_id2 = "1454652307002384393"
+    # tweets = client.get_tweets(
+    #     ids=[tweet_id1, tweet_id2],
+    #     expansions=['geo.place_id']
+    # )
 
-    print(tweet.data)
+    # print(tweets)
 
-    # # read the file to be hydrated
-    # geo_df = pd.read_csv('../data/full_dataset/2021_cleaned_dataset_geo.tsv', delimiter='\t')
-    # geo_df['geo'] = None
-    # N = len(geo_df)
-    # print('Current data has {} entries.'.format(N))
+    # print(tweet.includes['places'][0].id)
 
-    # # batch query to twitter api
-    # batch_size = 100
-    # batches = int(math.ceil(N / batch_size))
+    # read the file to be hydrated
+    geo_df = pd.read_csv('../data/processed_dataset/2021_march_april_geo.tsv', delimiter='\t')
+    geo_df['place_id'] = ''
+    N = len(geo_df)
+    print('Current data has {} entries.'.format(N))
 
-    # valid_ids = []
-    # valid_contents = []
+    # batch query to twitter api
+    batch_size = 100
+    batches = int(math.ceil(N / batch_size))
 
-    # print('Hydrating...')
-    # for i in range(batches):
-    #     if (i + 1) * batch_size <= N:
-    #         tweet_ids = geo_df['tweet_id'].values[i * batch_size: (i + 1) * batch_size]
-    #     else:
-    #         tweet_ids = geo_df['tweet_id'].values[i * batch_size:]
+    valid_ids = []
+    valid_contents = []
 
-    #     # construct twitter api parameter
-    #     query = ''
-    #     for id in tweet_ids:
-    #         query += str(id)
-    #         query += ','
-    #     query = query[0: -1]
+    print('Hydrating...')
+    for i in range(batches):
+        if (i + 1) * batch_size <= N:
+            tweet_ids = geo_df['tweet_id'].values[i * batch_size: (i + 1) * batch_size]
+        else:
+            tweet_ids = geo_df['tweet_id'].values[i * batch_size:]
 
-    #     tweets = client.get_tweets(
-    #         ids=query,
-    #         places_fields).data
+        # construct twitter api parameter
+        query = ''
+        for id in tweet_ids:
+            query += str(id)
+            query += ','
+        query = query[0: -1]
 
-    #     for tweet in tweets:
-    #         if tweet is not None:
-    #             valid_ids.append(tweet.id)
-    #             valid_contents.append(tweet.text.replace('\n', '\\n'))
-    #     print('Progress: {:.4%}'.format((i + 1) / (batches)))
+        tweet_place_ids = client.get_tweets(
+            ids=query,
+            expansions=['geo.place_id']
+        ).includes['places']
 
-    # # clean up and output
-    # hydrated_df = geo_df[geo_df['tweet_id'].isin(valid_ids)]
-    # hydrated_df.loc[:, 'text'] = valid_contents
-    # nan_value = float('NaN')
-    # hydrated_df.replace('', nan_value, inplace=True)
-    # hydrated_df = hydrated_df.dropna(subset=['text'])
-    # hydrated_df.to_csv('../data/processed_dataset/2021_march_april_geo_hydrated.tsv', index=False, sep='\t')
-    # print('Finished hydrating')
+        for pid in tweet_place_ids:
+            valid_contents.append(pid.id)
+        print('Progress: {:.4%}'.format((i + 1) / (batches)))
+
+    # clean up and output
+    place_df = pd.DataFrame.from_dict({'place_id': valid_contents})
+    place_df.to_csv('../data/processed_dataset/2021_march_april_coordinates.tsv', index=False, sep='\t')
+    print('Finished hydrating')
