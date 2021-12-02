@@ -2,19 +2,21 @@
 <html lang="en">
 
 <head>
-    <style> body {
-        margin: 0;
-    } </style>
+    <style>
+        body {
+            margin: 0;
+        }
+    </style>
 
-    <meta charset="UTF-8"/>
-    <meta name="viewport" content="width=device-width,initial-scale=1"/>
-    <meta name="monetization" content="$coil.xrptipbot.com/701298d5-481d-40ff-9945-336671ab2c42"/>
-    <link href="https://fonts.googleapis.com/css?family=Space+Mono:400,700&display=swap" rel="stylesheet"/>
-    <meta property="og:image" content="https://i.imgur.com/1AFEXhs.png"/>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="monetization" content="$coil.xrptipbot.com/701298d5-481d-40ff-9945-336671ab2c42" />
+    <link href="https://fonts.googleapis.com/css?family=Space+Mono:400,700&display=swap" rel="stylesheet" />
+    <meta property="og:image" content="https://i.imgur.com/1AFEXhs.png" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://d3js.org/d3.v6.min.js"></script>
     <title>CSE 6242: COVID-19 and Twitter Visualization</title>
-    <link rel="stylesheet" href="/layout.css"/>
+    <link rel="stylesheet" href="/layout.css" />
 
     <script src="https://d3js.org/d3.v3.min.js"></script>
     <script src="https://rawgit.com/jasondavies/d3-cloud/master/build/d3.layout.cloud.js"></script>
@@ -27,216 +29,224 @@
 
 <body class="bg-dark">
 
-<div class="top-info-container">
-    <!--Navigation bar-->
-    <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
-        <div class="container-fluid">
-            <span class="navbar-text fs-3 fw-bold">CSE6262 Twitter Visualization</span>
-            <a href="index.html">
-                <button class="btn btn-primary pull-right" type="button">Back</button>
-            </a>
-        </div>
-    </nav>
-</div>
-
-<div class="container text-white" style="position: absolute; left: 20px; top: 100px">
-    <div class="col-sm-3 mt-3 border border-secondary border-2">
-        <h5 class="mt-2 text-center text-danger">Total COVID-19 Tweets in <br>2021 March and April</h5>
-        <p class="text-center text-danger fs-3">
-            <span id="total">0</span>
-        </p>
+    <div class="top-info-container">
+        <!--Navigation bar-->
+        <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+            <div class="container-fluid">
+                <span class="navbar-text fs-3 fw-bold">CSE6262 Twitter Visualization</span>
+                <a href="index.html">
+                    <button class="btn btn-primary pull-right" type="button">Back</button>
+                </a>
+            </div>
+        </nav>
     </div>
 
-    <!-- <div class="col-sm-3 mt-3 border border-secondary border-2">
+    <div class="container text-white" style="position: absolute; left: 20px; top: 100px">
+        <div class="col-sm-3 mt-3 border border-secondary border-2">
+            <h5 class="mt-2 text-center text-danger">Total COVID-19 Tweets in <br>2021 March and April</h5>
+            <p class="text-center text-danger fs-3">
+                <span id="total">0</span>
+            </p>
+        </div>
+
+        <!-- <div class="col-sm-3 mt-3 border border-secondary border-2">
         <h5 class="mt-2 text-center text-warning">Word Cloud</h5>
     </div> -->
 
-    <!-- <div class="col-sm-3 mt-3 border border-secondary border-2" style="height: 500px; width: 500px">
+        <!-- <div class="col-sm-3 mt-3 border border-secondary border-2" style="height: 500px; width: 500px">
         <div id="cloud" style="height: 500x; width: 500px"></div> -->
-</div>
-
-<div id="globeViz" style="position: absolute; left: 0; top: 0"></div>
-</div>
-
-<div class="container text-white" style="position: absolute; right: -800px; top: 100px">
-    <div class="col-sm-3 mt-3 border border-secondary border-2" style="width: 400px">
-        <h5 class="mt-2 text-center text-warning">Word Cloud</h5>
     </div>
-    <div class="col-sm-3 mt-3 border border-secondary border-2" style="height: 500px; width: 400px">
-        <div id="cloud" style="height: 500px; width: 400px"></div>
+
+    <div id="globeViz" style="position: absolute; left: 0; top: 0"></div>
     </div>
-</div>
 
-<script>
-    const weightColor = d3.scaleSequentialSqrt(d3.interpolateYlOrRd)
-        .domain([0, 1e7]);
+    <div class="container text-white" style="position: absolute; right: -800px; top: 100px">
+        <div class="col-sm-3 mt-3 border border-secondary border-2" style="width: 400px">
+            <h5 class="mt-2 text-center text-warning">Monthly Word Cloud form Jan. to Apr.</h5>
+        </div>
+        <div class="col-sm-3 mt-3 border border-secondary border-2" style="height: 500px; width: 400px">
+            <div id="cloud" style="height: 500px; width: 400px"></div>
+        </div>
+    </div>
 
-    const world = Globe()
-    (document.getElementById('globeViz'))
-        .backgroundColor('rgba(0, 0, 0, 0)')
-        .globeImageUrl('//unpkg.com/three-globe/example/img/earth-night.jpg')
-        .bumpImageUrl('//unpkg.com/three-globe/example/img/earth-topology.png')
-        // .backgroundImageUrl('//unpkg.com/three-globe/example/img/night-sky.png')
-        .hexBinPointWeight('pop')
-        .hexAltitude(d => d.sumWeight * 6e-8)
-        .hexBinResolution(4)
-        .hexTopColor(d => weightColor(d.sumWeight))
-        .hexSideColor(d => weightColor(d.sumWeight))
-        .hexBinMerge(true)
-        .enablePointerInteraction(false); // performance improvement
+    <script>
+        const weightColor = d3.scaleSequentialSqrt(d3.interpolateYlOrRd)
+            .domain([0, 1e7]);
 
-    const file_country = './data/2021_march_april_geo_country.csv';
-    const file_coo = './data/2021_march_april_processed_coordinates.tsv'
-    fetch(file_coo).then(res => res.text())
-        .then(csv => d3.csvParse(csv, ({lat, lng, pop}) => ({lat: +lat, lng: +lng, pop: +pop * 1.2e5})))
-        .then(data => world.hexBinPointsData(data));
+        const world = Globe()
+            (document.getElementById('globeViz'))
+            .backgroundColor('rgba(0, 0, 0, 0)')
+            .globeImageUrl('//unpkg.com/three-globe/example/img/earth-night.jpg')
+            .bumpImageUrl('//unpkg.com/three-globe/example/img/earth-topology.png')
+            // .backgroundImageUrl('//unpkg.com/three-globe/example/img/night-sky.png')
+            .hexBinPointWeight('pop')
+            .hexAltitude(d => d.sumWeight * 6e-8)
+            .hexBinResolution(4)
+            .hexTopColor(d => weightColor(d.sumWeight))
+            .hexSideColor(d => weightColor(d.sumWeight))
+            .hexBinMerge(true)
+            .enablePointerInteraction(false); // performance improvement
 
-    // Add auto-rotation
-    world.controls().autoRotate = true;
-    world.controls().autoRotateSpeed = 0.6;
+        const file_country = './data/2021_march_april_geo_country.csv';
+        const file_coo = './data/2021_march_april_processed_coordinates.tsv'
+        fetch(file_coo).then(res => res.text())
+            .then(csv => d3.csvParse(csv, ({
+                lat,
+                lng,
+                pop
+            }) => ({
+                lat: +lat,
+                lng: +lng,
+                pop: +pop * 1.2e5
+            })))
+            .then(data => world.hexBinPointsData(data));
 
-    // Count tweets
-    let total_tweets = 0
-    d3.csv(file_country, function (data) {
-        total_tweets += +data.pop;
-        document.getElementById("total").innerHTML = total_tweets;
-    });
-</script>
+        // Add auto-rotation
+        world.controls().autoRotate = true;
+        world.controls().autoRotateSpeed = 0.6;
 
-<script>
-    //Simple animated example of d3-cloud - https://github.com/jasondavies/d3-cloud
-    //Based on https://github.com/jasondavies/d3-cloud/blob/master/examples/simple.html
+        // Count tweets
+        let total_tweets = 0
+        d3.csv(file_country, function(data) {
+            total_tweets += +data.pop;
+            document.getElementById("total").innerHTML = total_tweets;
+        });
+    </script>
 
-    // Encapsulate the word cloud functionality
-    function wordCloud(selector) {
+    <script>
+        //Simple animated example of d3-cloud - https://github.com/jasondavies/d3-cloud
+        //Based on https://github.com/jasondavies/d3-cloud/blob/master/examples/simple.html
 
-        var fill = d3.scale.category20();
+        // Encapsulate the word cloud functionality
+        function wordCloud(selector) {
 
-        //Construct the word cloud's SVG element
-        var svg = d3.select(selector).append("svg")
-            .attr("width", 400)
-            .attr("height", 500)
-            .append("g")
-            .attr("transform", "translate(200,250)");
+            var fill = d3.scale.category20();
 
-
-        //Draw the word cloud
-        function draw(words) {
-            var cloud = svg.selectAll("g text")
-                .data(words, function (d) {
-                    return d.text;
-                })
-
-            //Entering words
-            cloud.enter()
-                .append("text")
-                .style("font-family", "Impact")
-                .style("fill", function (d, i) {
-                    return fill(i);
-                })
-                .attr("text-anchor", "middle")
-                .attr('font-size', 1)
-                .text(function (d) {
-                    return d.text;
-                });
-
-            //Entering and existing words
-            cloud
-                .transition()
-                .duration(600)
-                .style("font-size", function (d) {
-                    return d.size + "px";
-                })
-                .attr("transform", function (d) {
-                    return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
-                })
-                .style("fill-opacity", 1);
-
-            //Exiting words
-            cloud.exit()
-                .transition()
-                .duration(200)
-                .style('fill-opacity', 1e-6)
-                .attr('font-size', 1)
-                .remove();
-        }
+            //Construct the word cloud's SVG element
+            var svg = d3.select(selector).append("svg")
+                .attr("width", 400)
+                .attr("height", 500)
+                .append("g")
+                .attr("transform", "translate(200,250)");
 
 
-        //Use the module pattern to encapsulate the visualisation code. We'll
-        // expose only the parts that need to be public.
-        return {
-
-            //Recompute the word cloud for a new set of words. This method will
-            // asycnhronously call draw when the layout has been computed.
-            //The outside world will need to call this function, so make it part
-            // of the wordCloud return value.
-            update: function (words) {
-                console.log(words)
-                d3.layout.cloud().size([400, 500])
-                    .words(words)
-                    .padding(5)
-                    .rotate(function () {
-                        return ~~(Math.random() * 2) * 90;
+            //Draw the word cloud
+            function draw(words) {
+                var cloud = svg.selectAll("g text")
+                    .data(words, function(d) {
+                        return d.text;
                     })
-                    .font("Impact")
-                    .fontSize(function (d) {
-                        return d.size;
+
+                //Entering words
+                cloud.enter()
+                    .append("text")
+                    .style("font-family", "Impact")
+                    .style("fill", function(d, i) {
+                        return fill(i);
                     })
-                    .on("end", draw)
-                    .start();
+                    .attr("text-anchor", "middle")
+                    .attr('font-size', 1)
+                    .text(function(d) {
+                        return d.text;
+                    });
+
+                //Entering and existing words
+                cloud
+                    .transition()
+                    .duration(600)
+                    .style("font-size", function(d) {
+                        return d.size + "px";
+                    })
+                    .attr("transform", function(d) {
+                        return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
+                    })
+                    .style("fill-opacity", 1);
+
+                //Exiting words
+                cloud.exit()
+                    .transition()
+                    .duration(200)
+                    .style('fill-opacity', 1e-6)
+                    .attr('font-size', 1)
+                    .remove();
             }
+
+
+            //Use the module pattern to encapsulate the visualisation code. We'll
+            // expose only the parts that need to be public.
+            return {
+
+                //Recompute the word cloud for a new set of words. This method will
+                // asycnhronously call draw when the layout has been computed.
+                //The outside world will need to call this function, so make it part
+                // of the wordCloud return value.
+                update: function(words) {
+                    console.log(words)
+                    d3.layout.cloud().size([400, 500])
+                        .words(words)
+                        .padding(5)
+                        .rotate(function() {
+                            return ~~(Math.random() * 2) * 90;
+                        })
+                        .font("Impact")
+                        .fontSize(function(d) {
+                            return d.size;
+                        })
+                        .on("end", draw)
+                        .start();
+                }
+            }
+
         }
 
-    }
+        //Some sample data - http://en.wikiquote.org/wiki/Opening_lines
+        var words = [
+            //2021-01-01
+            '19 covid19 coronavirus new vaccine 2021 year people amp cases 2020 pandemic us get virus via trump deaths health one like  news world 20 vaccines day time china casos would et first realdonald trump uk many know still state covid19 boris biden us stay home new cases biotech new year africa health recovery strain facemasks rollout deaths everyday official leaked second wave lockdown tested positive',
 
-    //Some sample data - http://en.wikiquote.org/wiki/Opening_lines
-    var words = [
-        //2021-01-01
-        '19 covid19 coronavirus new vaccine 2021 year people amp cases 2020 pandemic us get virus via trump deaths health one like  news world 20 vaccines day time china casos would et first realdonald trump uk many know still state covid19 boris biden us stay home new cases biotech new year africa health recovery strain facemasks rollout deaths everyday official leaked second wave lockdown tested positive',
+            //2021-02-01
+            '19 covid19 coronavirus vaccine new people cases pandemic via health vaccines get 2021 us virus one news casos deaths first biden vaccination like year test need time today help lockdown est pandemia covid19 coronavirus vaccine myanmar new cases people age christian government weapons free charge public health awareness donation medicine foods philanthropist help india organization eviction moratorium',
 
-        //2021-02-01
-        '19 covid19 coronavirus vaccine new people cases pandemic via health vaccines get 2021 us virus one news casos deaths first biden vaccination like year test need time today help lockdown est pandemia covid19 coronavirus vaccine myanmar new cases people age christian government weapons free charge public health awareness donation medicine foods philanthropist help india organization eviction moratorium',
+            //2021-03-01
+            '19 covid19 coronavirus vaccine new people cases pandemic health via get vaccines vaccination first one 2021 virus us year news johnson today  deaths march time pandemia like trump lockdown help covid19 coronavirus vaccine fully safe children cases pandemic health vaccination first virus us year news johnson today deaths like trump lockdown booster shots herd immunity whitehouse long-term mandates kids preventing',
 
-        //2021-03-01
-        '19 covid19 coronavirus vaccine new people cases pandemic health via get vaccines vaccination first one 2021 virus us year news johnson today  deaths march time pandemia like trump lockdown help covid19 coronavirus vaccine fully safe children cases pandemic health vaccination first virus us year news johnson today deaths like trump lockdown booster shots herd immunity whitehouse long-term mandates kids preventing',
+        ]
 
-    ]
+        //Prepare one of the sample sentences by removing punctuation,
+        // creating an array of words and computing a random size attribute.
+        function getWords(i) {
+            return words[i]
+                .replace(/[!\.,:;\?]/g, '')
+                .split(' ')
+                .map(function(d) {
+                    return {
+                        text: d,
+                        size: 10 + Math.random() * 40
+                    };
+                })
+        }
 
-    //Prepare one of the sample sentences by removing punctuation,
-    // creating an array of words and computing a random size attribute.
-    function getWords(i) {
-        return words[i]
-            .replace(/[!\.,:;\?]/g, '')
-            .split(' ')
-            .map(function (d) {
-                return {
-                    text: d,
-                    size: 10 + Math.random() * 40
-                };
-            })
-    }
+        //This method tells the word cloud to redraw with a new set of words.
+        //In reality the new words would probably come from a server request,
+        // user input or some other source.
+        function showNewWords(vis, i) {
+            console.log(i, 0)
+            i = i || 0;
+            var tmp = i++ % words.length
+            console.log(tmp, 1)
+            vis.update(getWords(i++ % words.length))
+            setTimeout(function() {
+                console.log("abc")
+                showNewWords(vis, i + 1)
+            }, 5000)
+        }
 
-    //This method tells the word cloud to redraw with a new set of words.
-    //In reality the new words would probably come from a server request,
-    // user input or some other source.
-    function showNewWords(vis, i) {
-        console.log(i, 0)
-        i = i || 0;
-        var tmp = i++ % words.length
-        console.log(tmp, 1)
-        vis.update(getWords(i++ % words.length))
-        setTimeout(function () {
-            console.log("abc")
-            showNewWords(vis, i + 1)
-        }, 5000)
-    }
+        //Create a new instance of the word cloud visualisation.
+        var myWordCloud = wordCloud('#cloud');
 
-    //Create a new instance of the word cloud visualisation.
-    var myWordCloud = wordCloud('#cloud');
-
-    //Start cycling through the demo data
-    showNewWords(myWordCloud);
-</script>
+        //Start cycling through the demo data
+        showNewWords(myWordCloud);
+    </script>
 
 </body>
 
