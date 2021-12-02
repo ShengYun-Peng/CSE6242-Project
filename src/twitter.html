@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <style> body {
         margin: 0;
@@ -46,17 +47,25 @@
         </p>
     </div>
 
-    <div class="col-sm-3 mt-3 border border-secondary border-2">
+    <!-- <div class="col-sm-3 mt-3 border border-secondary border-2">
         <h5 class="mt-2 text-center text-warning">Word Cloud</h5>
-    </div>
+    </div> -->
 
-    <div class="col-sm-3 mt-3 border border-secondary border-2" style="height: 320px; width: 320px">
-        <div id="cloud" style="height: 100px; width: 100px"></div>
-    </div>
-
-    <div id="globeViz" style="position: absolute; left: 0; top: 0"></div>
+    <!-- <div class="col-sm-3 mt-3 border border-secondary border-2" style="height: 500px; width: 500px">
+        <div id="cloud" style="height: 500x; width: 500px"></div> -->
 </div>
 
+<div id="globeViz" style="position: absolute; left: 0; top: 0"></div>
+</div>
+
+<div class="container text-white" style="position: absolute; right: -800px; top: 100px">
+    <div class="col-sm-3 mt-3 border border-secondary border-2" style="width: 400px">
+        <h5 class="mt-2 text-center text-warning">Word Cloud</h5>
+    </div>
+    <div class="col-sm-3 mt-3 border border-secondary border-2" style="height: 500px; width: 400px">
+        <div id="cloud" style="height: 500px; width: 400px"></div>
+    </div>
+</div>
 
 <script>
     const weightColor = d3.scaleSequentialSqrt(d3.interpolateYlOrRd)
@@ -101,14 +110,14 @@
     // Encapsulate the word cloud functionality
     function wordCloud(selector) {
 
-        var colors = ["crimson", "coral", "rosybrown", "lightsalmon", "blueviolet", "maroon"]
+        var fill = d3.scale.category20();
 
         //Construct the word cloud's SVG element
         var svg = d3.select(selector).append("svg")
-            .attr("width", 320)
-            .attr("height", 320)
+            .attr("width", 400)
+            .attr("height", 500)
             .append("g")
-            .attr("transform", "translate(160,160)");
+            .attr("transform", "translate(200,250)");
 
 
         //Draw the word cloud
@@ -122,8 +131,8 @@
             cloud.enter()
                 .append("text")
                 .style("font-family", "Impact")
-                .style("fill", function (d) {
-                    return colors[Math.floor(Math.random() * colors.length)]
+                .style("fill", function (d, i) {
+                    return fill(i);
                 })
                 .attr("text-anchor", "middle")
                 .attr('font-size', 1)
@@ -162,8 +171,8 @@
             //The outside world will need to call this function, so make it part
             // of the wordCloud return value.
             update: function (words) {
-                // console.log(words)
-                d3.layout.cloud().size([320, 320])
+                console.log(words)
+                d3.layout.cloud().size([400, 500])
                     .words(words)
                     .padding(5)
                     .rotate(function () {
@@ -182,11 +191,15 @@
 
     //Some sample data - http://en.wikiquote.org/wiki/Opening_lines
     var words = [
-        '2021-1 covid19 boris biden us stay home new cases biotech new year africa health recovery strain facemasks rollout deaths everyday official leaked second wave lockdown tested positive',
-        '2021-8 covid19 coronavirus vaccine myanmar new cases people age christian government weapons free charge public health awareness donation medicine foods philanthropist help india organization eviction moratorium',
-        '2021-3 covid19 coronavirus vaccine first virus house blood clots stay positive rollout cure doses truth mental health third wave new deaths reports officials ccp uphill innovation border immigrants care revolving',
-        '2021-10 covid19 coronavirus vaccine fully safe children cases pandemic health vaccination first virus us year news johnson today deaths like trump lockdown booster shots herd immunity whitehouse long-term mandates kids preventing',
-        '2021-5 covid19 coronavirus vaccine new cases people pandemic health vaccines fully dose us virus news death toll first second biden vaccination like year tested need time today test help lockdown shot works outright removal'
+        //2021-01-01
+        '19 covid19 coronavirus new vaccine 2021 year people amp cases 2020 pandemic us get virus via trump deaths health one like  news world 20 vaccines day time china casos would et first realdonald trump uk many know still state covid19 boris biden us stay home new cases biotech new year africa health recovery strain facemasks rollout deaths everyday official leaked second wave lockdown tested positive',
+
+        //2021-02-01
+        '19 covid19 coronavirus vaccine new people cases pandemic via health vaccines get 2021 us virus one news casos deaths first biden vaccination like year test need time today help lockdown est pandemia covid19 coronavirus vaccine myanmar new cases people age christian government weapons free charge public health awareness donation medicine foods philanthropist help india organization eviction moratorium',
+
+        //2021-03-01
+        '19 covid19 coronavirus vaccine new people cases pandemic health via get vaccines vaccination first one 2021 virus us year news johnson today  deaths march time pandemia like trump lockdown help covid19 coronavirus vaccine fully safe children cases pandemic health vaccination first virus us year news johnson today deaths like trump lockdown booster shots herd immunity whitehouse long-term mandates kids preventing',
+
     ]
 
     //Prepare one of the sample sentences by removing punctuation,
@@ -198,7 +211,7 @@
             .map(function (d) {
                 return {
                     text: d,
-                    size: 10 + Math.random() * 20
+                    size: 10 + Math.random() * 40
                 };
             })
     }
@@ -207,11 +220,13 @@
     //In reality the new words would probably come from a server request,
     // user input or some other source.
     function showNewWords(vis, i) {
+        console.log(i, 0)
         i = i || 0;
-
+        var tmp = i++ % words.length
+        console.log(tmp, 1)
         vis.update(getWords(i++ % words.length))
         setTimeout(function () {
-            // console.log("abc")
+            console.log("abc")
             showNewWords(vis, i + 1)
         }, 5000)
     }
@@ -224,4 +239,5 @@
 </script>
 
 </body>
+
 </html>
