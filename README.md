@@ -1,5 +1,12 @@
 # CSE6242-Project
 
+### Description
+
+* Twitter visualization: A world globe is shown with the numbers of COVID-19 tweets from worldwide geographic coordinates. 
+A higher and redder bar represents more tweets from one location. 
+The total number of COVID-19 related tweets in the 2021 March and April is listed. 
+Two bar charts are shown for the most common tweet countries and languages.
+
 ### Proposal
 Video: https://youtu.be/qlcI9DYTQEI 
 
