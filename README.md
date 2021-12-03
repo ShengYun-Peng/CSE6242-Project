@@ -20,3 +20,7 @@ npm run start
 
 3. Click the "Click to View Twitter" button in the top right corner to view the Twitter Visualization. 
 Then click the "Back" button to return the COVID Visualization.
+
+4. Package
+
+\href{https://github.com/jasondavies/d3-cloud}{\color{blue}d3-cloud plugin} provides the layout, font size, rotation and other useful feature, to generate fancy word clouds
