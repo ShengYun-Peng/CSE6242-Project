@@ -21,6 +21,8 @@ npm run start
 3. Click the "Click to View Twitter" button in the top right corner to view the Twitter Visualization. 
 Then click the "Back" button to return the COVID Visualization.
 
-4. Package
+4. Packages
 
-[d3-cloud plugin](https://github.com/jasondavies/d3-cloud): provides the layout, font size, rotation and other useful feature, to generate fancy word clouds
+* [globe.gl](https://github.com/vasturiano/globe.gl): provides data visualization layers on a 3-dimensional globe in a spherical projection
+
+* [d3-cloud plugin](https://github.com/jasondavies/d3-cloud): provides the layout, font size, rotation and other useful feature, to generate fancy word clouds
