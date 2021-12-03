@@ -23,4 +23,4 @@ Then click the "Back" button to return the COVID Visualization.
 
 4. Package
 
-\href{https://github.com/jasondavies/d3-cloud}{\color{blue}d3-cloud plugin} provides the layout, font size, rotation and other useful feature, to generate fancy word clouds
+{r}[d3-cloud plugin](https://github.com/jasondavies/d3-cloud): provides the layout, font size, rotation and other useful feature, to generate fancy word clouds
