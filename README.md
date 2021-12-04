@@ -2,6 +2,7 @@
 
 ### Description
 
+* Covid visualization: a globe placed in the center of the screen with line charts and numbers on both sides displaying worldwide stats related to Covid. Dragging along the slide bar below, color scheme of each country shown on the globe varies according to the severity of Covid in that region.  Meanwhile, the total numbers of confirmed cases, deaths and recoveries change dynamically on the right according to the selected date.
 * Twitter visualization: A world globe is shown with the numbers of COVID-19 tweets from worldwide geographic coordinates. 
 A higher and redder bar represents more tweets from one location. 
 The total number of COVID-19 related tweets in the 2021 March and April is listed. 
