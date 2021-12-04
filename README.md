@@ -6,6 +6,8 @@
 A higher and redder bar represents more tweets from one location. 
 The total number of COVID-19 related tweets in the 2021 March and April is listed. 
 Two bar charts are shown for the most common tweet countries and languages.
+* WordCloud: The COVID-19 tweeter word clouds is generated to analysis the relationship between COVID-19 related tweets focus and the severity of COVID-19.The data is cleaned by filtering out most non-English vocabularies and words with repetitive meaning. The results are shown below, the font size is determined by the frequency of words appearing in tweets. 
+
 
 ### Proposal
 Video: https://youtu.be/qlcI9DYTQEI 
